@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
-        String[][] maze = getMatrix("Data/File4");
+        String[][] maze = getMatrix("Data/File2");
         ArrayList<String> solution = findPaths(maze);
         printSolution(solution);
         printMatrix(maze);
@@ -61,13 +61,13 @@ public class Main {
         final int[] start = findPointStart(matrix[0],0,".");
         final int[] end = findPointEnd(matrix[matrix.length-1],matrix.length-1,".");
         ArrayList<String> queue = new ArrayList<>();
-        steps.add("(" + start[0] + "," + start[1] +")");
         queue.add("(" + start[0] + "," + start[1] +")");
         while(!queue.isEmpty())
         {
             String coord = queue.get(0);
             int prevRow = Integer.parseInt(coord.substring(coord.indexOf("(")+1, coord.indexOf(",")));
             int prevColumn = Integer.parseInt(coord.substring(coord.indexOf(",")+1, coord.indexOf(")")));
+            steps.add(coord);
             while(prevRow!=end[0] || prevColumn!=end[1])
             {
                 int size = steps.size();

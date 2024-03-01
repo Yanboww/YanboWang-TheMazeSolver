@@ -150,18 +150,7 @@ public class Main {
         return coord;
     }
 
-    public static int[] findPointEnd(String[] line, int rowNum, String key)
-    {
-        int[] coord = {rowNum,0};
-        for(int i = 0; i<line.length;i++)
-        {
-            if(line[i].equals(key)){
-                coord[1] = i;
-            }
-        }
-        return coord;
-    }
 
-    
+
 
 }

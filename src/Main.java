@@ -90,11 +90,13 @@ public class Main {
                 if (top != null && top.equals(".")){
                     prevRow -= 1;
                     steps.add("(" + prevRow + "," + prevColumn +")");
+                    foundAPath = true;
                 }
                 if (bottom!= null && bottom.equals(".")) {
                     if (!foundAPath){
                         prevRow += 1;
                         steps.add("(" + prevRow + "," + prevColumn +")");
+                        foundAPath = true;
                     }
                     else{
                         int changeRow = storageRow+1;
@@ -106,6 +108,7 @@ public class Main {
                     if (!foundAPath){
                         prevColumn -= 1;
                         steps.add("(" + prevRow + "," + prevColumn +")");
+                        foundAPath = true;
                     }
                     else{
                         int changeColumn = storageColumn-1;
@@ -120,6 +123,7 @@ public class Main {
                     if (!foundAPath){
                         prevColumn += 1;
                         steps.add("(" + prevRow + "," + prevColumn +")");
+                        foundAPath = true;
                     }
                     else{
                         int changeColumn = storageColumn+1;
@@ -130,9 +134,10 @@ public class Main {
                         }
                     }
                 }
-
+                if(!foundAPath) break;
             }
             queue.remove(0);
+            if(steps.contains("(" + end[0] + "," + end[1] +")")) break;
         }
         return steps;
     }

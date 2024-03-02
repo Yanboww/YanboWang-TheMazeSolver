@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
-        String[][] maze = getMatrix("Data/File6");
+        String[][] maze = getMatrix("Data/File7");
         ArrayList<String> solution = findPaths(maze);
+        checkList(solution);
         printSolution(solution);
         printMatrix(maze);
     }
@@ -102,10 +103,7 @@ public class Main {
                     }
                     else{
                         int changeRow = storageRow+1;
-                        if(!foundPoint){
-                            breakPoint = steps.get(steps.size()-1);
-                            foundPoint= true;
-                        }
+                        breakPoint = steps.get(steps.size()-1);
                         queue.add(1,"(" + changeRow+ "," + storageColumn +")");
                     }
                 }
@@ -117,10 +115,7 @@ public class Main {
                     }
                     else{
                         int changeColumn = storageColumn-1;
-                        if(!foundPoint){
-                            breakPoint = steps.get(steps.size()-1);
-                            foundPoint= true;
-                        }
+                        breakPoint = steps.get(steps.size()-1);
                         queue.add(1,"(" + storageRow+ "," + changeColumn +")");
                     }
                 }
@@ -132,16 +127,13 @@ public class Main {
                     }
                     else{
                         int changeColumn = storageColumn+1;
-                        if(!foundPoint){
-                            breakPoint = steps.get(steps.size()-1);
-                            foundPoint= true;
-                        }
+                        breakPoint = steps.get(steps.size()-1);
                         queue.add(1,"(" + storageRow+ "," + changeColumn +")");
                     }
                 }
                 if(!foundAPath){
                     steps = listSub(breakPoint,steps);
-                    printMatrix(matrix);
+                    //printMatrix(matrix);
                     break;
                 }
             }
@@ -179,9 +171,10 @@ public class Main {
     public static ArrayList<String> listSub(String start, ArrayList<String> steps)
     {
         //System.out.println(steps);
-        System.out.println(start + " --");
+        //System.out.println(start + " --");
         int coord = steps.indexOf(start);
         ArrayList<String> list = new ArrayList<>();
+        if(coord == 0 || coord == -1) return steps;
         for(int i = 0; i<coord; i++)
         {
             list.add(steps.get(i));
@@ -189,6 +182,24 @@ public class Main {
         //System.out.println(list);
         return list;
     }
+
+    public static void checkList(ArrayList<String> steps)
+    {
+        for(int i = steps.size()-1;i>0;i--)
+        {
+            String coord = steps.get(i);
+            String coord1 = steps.get(i-1);
+            int row = Integer.parseInt(coord.substring(coord.indexOf("(")+1, coord.indexOf(",")));
+            int column = Integer.parseInt(coord.substring(coord.indexOf(",")+1, coord.indexOf(")")));
+            int prevRow = Integer.parseInt(coord1.substring(coord1.indexOf("(")+1, coord1.indexOf(",")));
+            int prevColumn = Integer.parseInt(coord1.substring(coord1.indexOf(",")+1, coord1.indexOf(")")));
+            if(Math.abs(row-prevRow)>1 || Math.abs(prevColumn-column)>1 || row!=prevRow && column!=prevColumn)
+            {
+                steps.remove(i-1);
+            }
+        }
+    }
+
 
 
 

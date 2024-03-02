@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
-        String[][] maze = getMatrix("Data/File2");
+        String[][] maze = getMatrix("Data/File6");
         ArrayList<String> solution = findPaths(maze);
         printSolution(solution);
         printMatrix(maze);
@@ -64,13 +64,15 @@ public class Main {
         queue.add("(" + start[0] + "," + start[1] +")");
         while(!queue.isEmpty())
         {
+            //System.out.println(queue);
             String coord = queue.get(0);
             int prevRow = Integer.parseInt(coord.substring(coord.indexOf("(")+1, coord.indexOf(",")));
             int prevColumn = Integer.parseInt(coord.substring(coord.indexOf(",")+1, coord.indexOf(")")));
             steps.add(coord);
+            String breakPoint = "";
+            boolean foundPoint = false;
             while(prevRow!=end[0] || prevColumn!=end[1])
             {
-                int size = steps.size();
                 int storageRow = prevRow;
                 int storageColumn = prevColumn;
                 matrix[prevRow][prevColumn] = "O";
@@ -100,8 +102,11 @@ public class Main {
                     }
                     else{
                         int changeRow = storageRow+1;
-                        queue.add("(" + changeRow+ "," + storageColumn +")");
-                        steps.remove(steps.size()-1);
+                        if(!foundPoint){
+                            breakPoint = steps.get(steps.size()-1);
+                            foundPoint= true;
+                        }
+                        queue.add(1,"(" + changeRow+ "," + storageColumn +")");
                     }
                 }
                 if (left!=null && left.equals(".")) {
@@ -112,11 +117,11 @@ public class Main {
                     }
                     else{
                         int changeColumn = storageColumn-1;
-                        queue.add("(" + storageRow+ "," + changeColumn +")");
-                        if(steps.size()!=size)
-                        {
-                            steps.remove(steps.size()-1);
+                        if(!foundPoint){
+                            breakPoint = steps.get(steps.size()-1);
+                            foundPoint= true;
                         }
+                        queue.add(1,"(" + storageRow+ "," + changeColumn +")");
                     }
                 }
                 if (right!=null && right.equals(".")) {
@@ -127,14 +132,18 @@ public class Main {
                     }
                     else{
                         int changeColumn = storageColumn+1;
-                        queue.add("(" + storageRow+ "," + changeColumn +")");;
-                        if(steps.size()!=size)
-                        {
-                            steps.remove(steps.size()-1);
+                        if(!foundPoint){
+                            breakPoint = steps.get(steps.size()-1);
+                            foundPoint= true;
                         }
+                        queue.add(1,"(" + storageRow+ "," + changeColumn +")");
                     }
                 }
-                if(!foundAPath) break;
+                if(!foundAPath){
+                    steps = listSub(breakPoint,steps);
+                    printMatrix(matrix);
+                    break;
+                }
             }
             queue.remove(0);
             if(steps.contains("(" + end[0] + "," + end[1] +")")) break;
@@ -166,6 +175,21 @@ public class Main {
         }
         return coord;
     }
+
+    public static ArrayList<String> listSub(String start, ArrayList<String> steps)
+    {
+        //System.out.println(steps);
+        System.out.println(start + " --");
+        int coord = steps.indexOf(start);
+        ArrayList<String> list = new ArrayList<>();
+        for(int i = 0; i<coord; i++)
+        {
+            list.add(steps.get(i));
+        }
+        //System.out.println(list);
+        return list;
+    }
+
 
 
 

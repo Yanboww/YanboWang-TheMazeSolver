@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
-        String[][] maze = getMatrix("Data/File7");
+        String[][] maze = getMatrix("Data/supermaze");
         ArrayList<String> solution = findPaths(maze);
         checkList(solution);
         printSolution(solution);
-        printMatrix(maze);
+        printSolutionMaze(maze,solution);
     }
 
     public static String[][] getMatrix(String fileName) {
@@ -198,6 +198,20 @@ public class Main {
                 steps.remove(i-1);
             }
         }
+    }
+
+    public static void printSolutionMaze(String[][] maze, ArrayList<String> steps)
+    {
+        String blue = "\u001B[34m";
+        String reset = "\u001B[0m";
+        for(String coord : steps)
+        {
+            int row = Integer.parseInt(coord.substring(1,coord.indexOf(",")));
+            int column = Integer.parseInt(coord.substring(coord.indexOf(",")+1,coord.length()-1));
+            maze[row][column] = blue + "V" + reset;
+
+        }
+        printMatrix(maze);
     }
 
 
